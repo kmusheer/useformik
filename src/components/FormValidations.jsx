@@ -8,7 +8,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 const personSchema = yup.object().shape({
   firstname: yup.string().defined(),
   lastname: yup.string().defined(),
-  email: yup.string().nullable().email(),
+  email: yup.string().nullable().email().required(),
   phone: yup.string().required("required").matches(phoneRegExp, 'Phone number is not valid').min(10, "too short").max(10, "too long"),
   birthdate: yup.date().nullable().min(new Date(1900, 0, 1)).required(),
   address: yup.string().required(),
@@ -36,7 +36,6 @@ const initialValues = {
 const FormValidations = () => {
 
   const { handleBlur, handleChange, handleSubmit, values, touched, errors } = useFormik({
-    // const Formik = useFormik({
     initialValues: initialValues,
     validationSchema: personSchema,
     onSubmit: (values) => {
@@ -49,9 +48,6 @@ const FormValidations = () => {
       <div className="formbold-main-wrapper">
         <div className="formbold-form-wrapper">
 
-          {/* <img src="your-image-url-here.jpg"> */}
-
-          {/* <form action="https://formbold.com/s/FORM_ID" method="POST"> */}
           <form onSubmit={handleSubmit}>
             <div className="formbold-form-title">
               <h2 className="">Register now</h2>
