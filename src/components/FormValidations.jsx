@@ -1,6 +1,7 @@
 import '../App.css'
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -34,12 +35,22 @@ const initialValues = {
 }
 
 const FormValidations = () => {
+const initialFormMessage= 'Fill this form '
+  const [submitDetail, SetsubmitDetail] = useState(initialFormMessage)
 
-  const { handleBlur, handleChange, handleSubmit, values, touched, errors } = useFormik({
+  // SetsubmitDetail('')
+
+  const { handleBlur, handleChange,handleReset, handleSubmit, values, touched, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: personSchema,
     onSubmit: (values) => {
-      console.log("values", values)
+      console.log("values", JSON.stringify(values))
+      alert(JSON.stringify(values, null,2));
+      setTimeout(() => {
+        SetsubmitDetail(initialFormMessage)
+      }, 2000);
+      SetsubmitDetail('Thanks to fill this form ')
+      handleReset();
     }
   })
 
@@ -52,8 +63,7 @@ const FormValidations = () => {
             <div className="formbold-form-title">
               <h2 className="">Register now</h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt.
+                {submitDetail}
               </p>
             </div>
 
@@ -72,7 +82,7 @@ const FormValidations = () => {
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
-                {touched.firstname && errors.firstname && (<div style={{ color: "Red", fontSize: "12px" }}>{errors.firstname}</div>)}
+                {touched.firstname && errors.firstname && (<div style={{ color: "Red", fontSize: "12px" }}>First Name is required</div>)}
               </div>
               <div>
                 <label htmlFor="lastname" className="formbold-form-label"> Last name </label>
